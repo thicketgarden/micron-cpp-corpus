@@ -1,19 +1,26 @@
 # Capture targets: node hash <TAB> page path
 #
-# From Roogle's MeshRank leaderboard, which ranks pages by how much of the mesh
-# links to them, discounted for node size. Using an existing index rather than
-# crawling means we discover without probing, which is the first rule in
-# thicket-firmware's docs/network-citizenship.md.
+# ONE PAGE PER NODE. Not one per pass, not one per day. One.
 #
-# ONE REQUEST PER NODE. These are fetched once and frozen. That is well inside
-# the one-per-day limit the network asks for, and it is the whole point: a
-# frozen snapshot is worth more to us than a live one.
+# An earlier draft of this file listed rngit's other twelve paths as a "second
+# pass on another day". That is crawling with extra steps: walking every path a
+# node exposes is the behaviour the maintainer objected to, and spreading it
+# over days changes the interval, not the thing. The rule is discovery without
+# enumeration.
 #
-# ouroboros git is the interesting one for generated Micron: an rngit node
-# builds its pages from a repository, so its output is machine-made.
+# It costs less than it looks. An rngit index is already machine-generated, a
+# repository list built from the repository set rather than an authored page, so
+# one page per node still gets the corpus the machine-made Micron it is short
+# of. If a page turns out to need a companion, ask for that page specifically
+# because something referenced it, not because it exists.
+#
+# Targets come from indexes that already exist: Roogle's MeshRank leaderboard,
+# and hashes the founder had to hand. Nothing here was found by probing.
 
-fbe7813b26a8858d552b10cd577abdcf	/page/index.mu	# RNS-NEWS, rank 202.7
+a8d24177d946de4f1f0a0fe1af9a1338	/page/index.mu	# Aleph, rngit, the original
+51b80676773cac13f4d5378fd2bb7c06	/page/index.mu	# ouroboros git, rngit
+9ce92808be498e9e05590ff27cbfdfe4	/page/index.mu	# rns.recipes, the forum's own node
+fbe7813b26a8858d552b10cd577abdcf	/page/index.mu	# RNS-NEWS, MeshRank 202.7
 f9f62880839e477c535aef7231ef2ebe	/page/index.mu	# Off Grid Reticulum Network, 122.2
 c497c6e1fd27602027240a6ce948010d	/page/index.mu	# WrestlingNewsSource, 115.9
-51b80676773cac13f4d5378fd2bb7c06	/page/index.mu	# ouroboros git, 107.7  <- rngit, generated
 e8e01ad8de6531f92b250ad1c5cc0cdf	/page/index.mu	# RNS-GEO, 103.9
