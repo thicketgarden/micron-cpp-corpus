@@ -76,9 +76,16 @@ apart:
 
 | kind | what it is | in the corpus |
 |---|---|---|
-| executable source | a program whose output is Micron | 39 files, mode 100755, **never rendered** |
+| executable source | a program whose output is Micron | **removed** |
 | `tier4-generated/` | that program's output, run locally | 5 pages |
 | `tier5-live/` | a page captured from a **live node** | not yet captured |
+
+The executable sources are gone. They were program text sitting in a page tier,
+never rendered and never renderable, and they were measured before removal: they
+contributed no construct the rest of the corpus lacks. No divider, table, image
+or partial was unique to them, and of 81 field events they held 6, all plain
+text, while every masked and pre-checked one lives elsewhere. What went with
+them is volume, roughly 4,400 text events and 35 of 347 links.
 
 Tier 5 is the honest answer to the tier 4 shortfall. Most executable pages
 cannot run here because a `*.mu`-only fetch leaves their dependencies behind;
