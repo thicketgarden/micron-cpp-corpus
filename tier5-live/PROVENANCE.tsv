@@ -1,6 +1,5 @@
 path	node_hash	page_path	captured	kind	note
 fbe7813b26a8858d__page__index.mu	fbe7813b26a8858d552b10cd577abdcf	/page/index.mu	2026-09-07	live-snapshot	frozen; never re-fetch to diff
-51b80676773cac13__page__index.mu	51b80676773cac13f4d5378fd2bb7c06	/page/index.mu	2026-09-07	live-snapshot	frozen; never re-fetch to diff
 a8d24177d946de4f__page__blob.mu	a8d24177d946de4f1f0a0fe1af9a1338	/page/blob.mu	2026-09-07	live-snapshot	frozen; REFUSED: node requires identification, not retried
 51b80676773cac13__page__repo.mu	51b80676773cac13f4d5378fd2bb7c06	/page/repo.mu	2026-09-07	live-snapshot	frozen; rngit error page, request needs parameters
 e8e01ad8de6531f9__page__index.mu	e8e01ad8de6531f92b250ad1c5cc0cdf	/page/index.mu	2026-09-07	live-snapshot	frozen; never re-fetch to diff
