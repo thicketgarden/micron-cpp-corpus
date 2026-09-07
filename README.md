@@ -12,11 +12,15 @@ commit it came from and recorded in `MANIFEST.tsv` with its licence.
 
 ## Three tiers
 
-**`tier1-real-world/`, 67 pages, 520 KB.** Pages from deployed nodes and
-community networks: Chicago's network, a German-language node with guestbook and
-pinboard pages, weather-station output, a peer parser's own test set. MIT, ISC
-and 0BSD. This is what Micron looks like when someone is using it rather than
-demonstrating it.
+**`tier1-real-world/`, 79 pages.** Pages from deployed nodes and community
+networks: Chicago's network, a German-language node with guestbook and pinboard
+pages, weather-station output, a broadcast node, a peer parser's own test set,
+and a tree-sitter grammar's fixtures. MIT, ISC, 0BSD and Unlicense. This is what
+Micron looks like when someone is using it rather than demonstrating it.
+
+Sources here were chosen partly to exercise the rarer constructs. Tables,
+images and partials appear on almost no real page, so pages that use them were
+sought out deliberately rather than waiting for one to turn up.
 
 **`tier2-generated/`, not committed.** Git-over-Reticulum nodes serve Micron
 converted from markdown on the fly, and that output has a shape hand-written
