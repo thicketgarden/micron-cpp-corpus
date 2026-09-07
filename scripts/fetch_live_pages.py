@@ -61,8 +61,24 @@ def listen(seconds):
     print(f"\n{len(_seen)} node(s) heard")
 
 
-def fetch(hash_hex, path, outdir):
-    """One page over a Link. Returns the raw bytes the node served."""
+def _slug(hash_hex, path):
+    s = f"{hash_hex[:16]}__{path.strip('/').replace('/', '__')}"
+    return s if s.endswith(".mu") else s + ".mu"
+
+
+def fetch(hash_hex, path, outdir, refetch=False):
+    """One page over a Link. Returns the raw bytes the node served.
+
+    ALREADY CAPTURED MEANS DONE. A page we hold is a frozen snapshot, and
+    re-fetching it would both spend a request the node did not need to serve and
+    overwrite the snapshot with a newer one, which is the thing the freeze rule
+    exists to prevent. Pass refetch=True only when replacing a capture on
+    purpose."""
+    dest_file = outdir / _slug(hash_hex, path)
+    if dest_file.exists() and not refetch:
+        print(f"  have    {dest_file.name}  ({dest_file.stat().st_size} B, kept)")
+        return None
+
     dest_hash = bytes.fromhex(hash_hex)
     if not RNS.Transport.has_path(dest_hash):
         RNS.Transport.request_path(dest_hash)
@@ -102,10 +118,6 @@ def fetch(hash_hex, path, outdir):
         data = data.encode("utf-8")
 
     outdir.mkdir(parents=True, exist_ok=True)
-    slug = f"{hash_hex[:16]}__{path.strip('/').replace('/', '__')}"
-    if not slug.endswith(".mu"):
-        slug += ".mu"
-    dest_file = outdir / slug
     dest_file.write_bytes(data)
 
     # Provenance, per file. A live snapshot is only meaningful with the node,
@@ -113,6 +125,8 @@ def fetch(hash_hex, path, outdir):
     prov = outdir / "PROVENANCE.tsv"
     if not prov.exists():
         prov.write_text("path\tnode_hash\tpage_path\tcaptured\tkind\tnote\n")
+    if dest_file.name in prov.read_text():
+        return data
     with prov.open("a") as fh:
         fh.write(f"{dest_file.name}\t{hash_hex}\t{path}\t"
                  f"{time.strftime('%Y-%m-%d')}\tlive-snapshot\t"
@@ -128,6 +142,9 @@ def main():
     ap.add_argument("--path", default="/page/index.mu")
     ap.add_argument("--from", dest="targets", metavar="FILE")
     ap.add_argument("--out", default="tier5-live")
+    ap.add_argument("--refetch", action="store_true",
+                    help="replace a capture we already hold; off by default, "
+                         "because a frozen snapshot is meant to stay still")
     a = ap.parse_args()
 
     RNS.Reticulum()
@@ -136,7 +153,7 @@ def main():
     if a.listen:
         listen(a.listen)
     elif a.fetch:
-        fetch(a.fetch, a.path, outdir)
+        fetch(a.fetch, a.path, outdir, a.refetch)
     elif a.targets:
         for line in pathlib.Path(a.targets).read_text().splitlines():
             line = line.strip()
@@ -147,11 +164,12 @@ def main():
             parts = [c for c in parts if c]
             if not parts:
                 continue
-            fetch(parts[0], parts[1] if len(parts) > 1 else "/page/index.mu", outdir)
-            # One request per node, and a pause between nodes. The network asks
-            # for at most one a day; this is a single pass, so the only thing
-            # left to get right is not arriving as a burst.
-            time.sleep(2)
+            got = fetch(parts[0], parts[1] if len(parts) > 1 else "/page/index.mu",
+                        outdir, a.refetch)
+            # Only pause after actually asking a node. Skipping a page we
+            # already hold costs nobody anything and should not cost us time.
+            if got is not None:
+                time.sleep(2)
     else:
         ap.print_help()
         return 2
