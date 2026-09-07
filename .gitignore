@@ -2,3 +2,6 @@
 # from inputs pinned by commit SHA, so the corpus stays reproducible without
 # redistributing anyone else's markdown.
 tier2-generated/
+
+# local venv for the live-capture script
+.venv/
