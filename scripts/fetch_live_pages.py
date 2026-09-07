@@ -142,8 +142,16 @@ def main():
             line = line.strip()
             if not line or line.startswith("#"):
                 continue
-            parts = line.split("\t")
+            # Trailing "# comment" columns are for the reader, not the fetch.
+            parts = [c.split("#")[0].strip() for c in line.split("\t")]
+            parts = [c for c in parts if c]
+            if not parts:
+                continue
             fetch(parts[0], parts[1] if len(parts) > 1 else "/page/index.mu", outdir)
+            # One request per node, and a pause between nodes. The network asks
+            # for at most one a day; this is a single pass, so the only thing
+            # left to get right is not arriving as a burst.
+            time.sleep(2)
     else:
         ap.print_help()
         return 2
