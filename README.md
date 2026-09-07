@@ -52,3 +52,19 @@ Committed files need a `MANIFEST.tsv` row: path, source URL, commit, retrieval
 date, licence. **Permissive licences go in tier 1. Unlicensed material does not
 go in at all**, because no licence means no permission, which is worse than an
 awkward one.
+
+**`tier4-generated/`, 5 pages.** What an executable page actually serves. A
+NomadNet page with the executable bit is a program; the corpus held the sources
+and none of the output, which is the Micron a reader receives and the shape most
+likely to hide a bug, because no human wrote it.
+
+`scripts/generate_dynamic.py` runs them under NomadNet's own contract
+(`Node.py`: minimal environment carrying only `PATH`, `link_id`,
+`remote_identity` and the request's `field_*`/`var_*`) and freezes stdout.
+**Manual, never CI**: regenerating per run would re-introduce timestamps and node
+state, and the corpus is frozen on purpose. Generation produces files; CI
+compares files.
+
+Every output is run three times on the same input and dropped unless all three
+match. `PROVENANCE.tsv` records the script, the exact request, the source commit
+and the licence.
