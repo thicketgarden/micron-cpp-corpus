@@ -4,25 +4,50 @@
 nodes. This machine's `~/.reticulum/config` carries an `AutoInterface` only,
 which is LAN discovery and finds nothing beyond the local network.
 
-Add one TCP client interface under `[interfaces]`:
+**Do not trust a hostname from memory.** The endpoints in this file were taken
+from the live directory, which is the same interface-discovery data nodes
+announce, surfaced over the web:
 
-```ini
-  [[RNS Testnet Amsterdam]]
-    type = TCPClientInterface
-    enabled = yes
-    target_host = amsterdam.connect.reticulum.network
-    target_port = 4965
+```sh
+curl -s https://directory.rns.recipes/api/directory/discovered | python3 -m json.tool | less
+curl -s https://directory.rns.recipes/api/directory/submitted  | python3 -m json.tool | less
 ```
 
-Others, if that one is down:
+Each entry carries `status`, `lastHeard` and a ready-to-paste `config` block. If
+one below has gone quiet, take a fresh one from there rather than guessing.
+
+Add one under `[interfaces]` in `~/.reticulum/config`. All of these were online
+and heard from within the hour when this was written:
 
 ```ini
-  [[Between the Borders]]
+  [[cybercore]]
     type = TCPClientInterface
     enabled = yes
-    target_host = reticulum.betweentheborders.com
+    target_host = rns.cybercore.uk
+    target_port = 4242
+
+  [[RMAP World]]
+    type = TCPClientInterface
+    enabled = yes
+    target_host = rmap.world
+    target_port = 4242
+
+  [[NEPAMesh]]
+    type = TCPClientInterface
+    enabled = yes
+    target_host = reticulum.nepamesh.com
     target_port = 4242
 ```
+
+⚠ **`TCPClientInterface`, not `BackboneInterface`.** Much of the directory is
+now Backbone, which arrived in RNS 1.5; a `uv tool install rns` may be older.
+Check with `rnstatus --version`. A TCP client works on every version and reaches
+the same network.
+
+⚠ **The AutoInterface warnings are separate and harmless.** `carrier loss on
+utun0` is Reticulum trying multicast discovery over a VPN tunnel. It costs
+nothing but noise. To silence it, name a real interface:
+`devices = en0` under the AutoInterface block.
 
 Then:
 
