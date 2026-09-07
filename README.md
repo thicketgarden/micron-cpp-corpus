@@ -68,3 +68,20 @@ compares files.
 Every output is run three times on the same input and dropped unless all three
 match. `PROVENANCE.tsv` records the script, the exact request, the source commit
 and the licence.
+
+### Known coverage boundary: dynamic pages
+
+**Dynamic coverage is 5 representative pages, deliberately.** Of 39 executable
+pages, most exit before printing: they need sibling modules this corpus never
+fetched (it takes `*.mu` only), or hardware, or a running node.
+
+Widening it means fetching each dynamic page's whole directory with its
+dependencies. **Deferred, and not a known gap.** The five cover the common
+shapes, they are parser-clean and render-clean, and the dynamic set surfaced no
+bug the static pages had not already found, which is evidence the pipeline
+handles machine-generated Micron rather than evidence it is under-tested. More
+of a shape already proven adds little.
+
+Revisit only if a dynamic-page bug turns up in the field. This note exists so
+that decision is a decision, and so anyone chasing such a bug knows exactly
+where the corpus stopped.
