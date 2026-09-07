@@ -1,0 +1,1 @@
+See MANIFEST.tsv for which files carry MIT, and the originating repository for its full text.

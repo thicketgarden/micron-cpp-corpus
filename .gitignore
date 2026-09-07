@@ -1,0 +1,4 @@
+# Tier 2 is generated, never committed. scripts/generate_tier2.py rebuilds it
+# from inputs pinned by commit SHA, so the corpus stays reproducible without
+# redistributing anyone else's markdown.
+tier2-generated/
