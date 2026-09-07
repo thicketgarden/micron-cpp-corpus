@@ -80,9 +80,17 @@ apart:
 | `tier4-generated/` | that program's output, run locally | 5 pages |
 | `tier5-live/` | a page captured from a **live node** | not yet captured |
 
-The executable sources are gone. They were program text sitting in a page tier,
-never rendered and never renderable, and they were measured before removal: they
-contributed no construct the rest of the corpus lacks. No divider, table, image
+The programs are gone, in two rounds. First the 39 with the executable bit set,
+which NomadNet runs and whose output is the page. Then 24 more whose first line
+is a Python shebang: their authors committed them mode 644 without the exec bit,
+so NomadNet serves the raw source and a reader receives Python, not Micron. A
+Micron page's `#!` is a directive like `#!c=` or `#!bg=`; a `#!/` is a program,
+and that is an unambiguous test.
+
+Both rounds were measured before removal, because shrinking what the parity
+suite sees is how field and divider bugs stayed green. No construct is unique to
+them: masked fields, pre-checked boxes, all three divider fills, tables, images
+and partials all survive in the pages that remain. No divider, table, image
 or partial was unique to them, and of 81 field events they held 6, all plain
 text, while every masked and pre-checked one lives elsewhere. What went with
 them is volume, roughly 4,400 text events and 35 of 347 links.
