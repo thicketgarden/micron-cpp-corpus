@@ -69,6 +69,26 @@ Every output is run three times on the same input and dropped unless all three
 match. `PROVENANCE.tsv` records the script, the exact request, the source commit
 and the licence.
 
+### Where dynamic pages come from, and where they stop
+
+Three different things are called dynamic here, and the manifest keeps them
+apart:
+
+| kind | what it is | in the corpus |
+|---|---|---|
+| executable source | a program whose output is Micron | 39 files, mode 100755, **never rendered** |
+| `tier4-generated/` | that program's output, run locally | 5 pages |
+| `tier5-live/` | a page captured from a **live node** | not yet captured |
+
+Tier 5 is the honest answer to the tier 4 shortfall. Most executable pages
+cannot run here because a `*.mu`-only fetch leaves their dependencies behind;
+the node running them has everything. `scripts/fetch_live_pages.py` captures
+from a live node and freezes the result, and `scripts/TESTNET.md` says what
+interface that needs.
+
+**Nothing is captured yet**, because the machine that built this corpus has no
+route to the network the nodes are on.
+
 ### Known coverage boundary: dynamic pages
 
 **Dynamic coverage is 5 representative pages, deliberately.** Of 39 executable
